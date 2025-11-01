@@ -129,21 +129,23 @@ function drawPipes() {
 
 function updatePipes() {
     // Move pipes
-    pipes.forEach((pipe, index) => {
-        pipe.x -= 3;
+    for (let i = 0; i < pipes.length; i++) {
+        pipes[i].x -= 3;
         
         // Check if bird passed pipe
-        if (!pipe.passed && pipe.x + pipe.width < bird.x - bird.radius) {
-            pipe.passed = true;
+        if (!pipes[i].passed && pipes[i].x + pipes[i].width < bird.x + bird.radius) {
+            pipes[i].passed = true;
             score++;
             scoreElement.textContent = score;
         }
-        
-        // Remove pipes that are off screen
-        if (pipe.x + pipe.width < 0) {
-            pipes.splice(index, 1);
+    }
+    
+    // Remove pipes that are off screen (iterate backwards to avoid skipping)
+    for (let i = pipes.length - 1; i >= 0; i--) {
+        if (pipes[i].x + pipes[i].width < 0) {
+            pipes.splice(i, 1);
         }
-    });
+    }
     
     // Create new pipes
     frameCount++;
